@@ -1,5 +1,5 @@
-#ifndef PROXIMITYSENSOR_H
-#define PROXIMITYSENSOR_H
+#ifndef __PROXIMITYSENSOR_H__
+#define __PROXIMITYSENSOR_H__
 
 class ProximitySensor {
     public:

@@ -1,5 +1,5 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef __BUTTON_H__
+#define __BUTTON_H__
 
 class Button {
     public:
