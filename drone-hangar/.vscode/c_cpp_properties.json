@@ -8,8 +8,8 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/include",
-                "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/src",
+                "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/include",
+                "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/src",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/variants/standard",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -22,8 +22,8 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/include",
-                    "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/src",
+                    "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/include",
+                    "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/src",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/variants/standard",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -35,7 +35,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60200",
+                "PLATFORMIO=60118",
                 "ARDUINO_AVR_UNO",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
