@@ -4,6 +4,7 @@
 class PresenceSensor {
 public:
     virtual ~PresenceSensor() {}
+    virtual void begin() = 0;
     virtual bool isDetected() = 0;
 };
 

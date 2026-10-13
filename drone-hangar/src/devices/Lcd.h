@@ -4,9 +4,9 @@
 class Lcd {
 public:
     virtual ~Lcd() {}
-    virtual void setCursor(int col, int row) = 0;
+    virtual void init() = 0;
     virtual void clear() = 0;
-    virtual void write(const char* msg) = 0;
+    virtual void write(const char* msg, uint8_t col, uint8_t row) = 0;
 };
 
 #endif
