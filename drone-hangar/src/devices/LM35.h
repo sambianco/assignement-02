@@ -2,6 +2,7 @@
 #define __LM35_H__
 
 #include "TempSensor.h"
+#include <stdint.h>
 
 class LM35 : public TempSensor {
 private:

@@ -9,7 +9,7 @@ struct Context
     bool isInAlarm = false;
     bool okBlink = false;
     DroneCommand requestCommand = NONE;
-    float currentDistance 0 0.0f;
+    float currentDistance = 0.0f;
 };
 
 #endif
