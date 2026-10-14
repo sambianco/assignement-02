@@ -1,31 +1,34 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
 {
     "configurations": [
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/include",
-                "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/src",
-                "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/.pio/libdeps/uno/LiquidCrystal_I2C",
+                "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/include",
+                "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/src",
+                "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/.pio/libdeps/uno/LiquidCrystal_I2C",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
-                "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/.pio/libdeps/uno/Servo/src",
+                "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/.pio/libdeps/uno/Servo/src",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/variants/standard",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                 "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "",
-                "${workspaceFolder}/src/scheduler",
-                "${workspaceFolder}/src/devices"
+                ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/include",
-                    "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/src",
-                    "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/.pio/libdeps/uno/LiquidCrystal_I2C",
+                    "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/include",
+                    "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/src",
+                    "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/.pio/libdeps/uno/LiquidCrystal_I2C",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
-                    "C:/Users/samue/Documents/UNIBO/3/SISTEMI IOT/ass2/assignement-02/drone-hangar/.pio/libdeps/uno/Servo/src",
+                    "C:/Users/samue/Documents/UNIBO/3/IoT/assignement-02/drone-hangar/.pio/libdeps/uno/Servo/src",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/variants/standard",
                     "C:/Users/samue/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -36,7 +39,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60118",
+                "PLATFORMIO=60200",
                 "ARDUINO_AVR_UNO",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",

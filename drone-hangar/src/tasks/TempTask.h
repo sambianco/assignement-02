@@ -1,5 +1,5 @@
-#ifndef __TEMP_TASKS_H__
-#define __TEMP_TASKS_H__
+#ifndef __TEMP_TASK_H__
+#define __TEMP_TASK_H__
 
 #include "../scheduler/Task.h"
 #include "../devices/TempSensor.h"
