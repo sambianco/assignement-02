@@ -1,7 +1,7 @@
 #include "HangarTask.h"
 #include <Arduino.h>
 
-HangarTask::HangarTask(Context* context, ServoMotor* servo, Button* resetButton, PresenceSensor* pir, ProximitySensor* proximity, Light* ledOne, Light* ledThree) {
+HangarTask::HangarTask(Context* context, ServoMotor* servo, Button* resetButton, PresenceSensor* pir, ProximitySensor* proximity, Light* ledOne, Light* ledThree, Lcd* lcd) {
     this->context = context;
     this->servo = servo;
     this->resetButton = resetButton;
@@ -9,15 +9,23 @@ HangarTask::HangarTask(Context* context, ServoMotor* servo, Button* resetButton,
     this->proximity = proximity;
     this->ledOne = ledOne;
     this->ledThree = ledThree;
+    this->lcd = lcd;
+    this->isTrackingExit = false;
+    this->exitTimestamp = 0;
+    this->stateTimestamp = 0;
 }
 
 void HangarTask::init(int period) {
     Task::init(period);
-    this->state = CLOSED;
-    this->ledOne->switchOff();
+    this->state = DRONE_INSIDE;
+    lcd->clear();
+    lcd->write("DRONE INSIDE", 0, 0);
+    this->ledOne->switchOn();
     this->ledThree->switchOff();
     this->servo->attach();
     this->servo->setPosition(0);
+    this->isTrackingExit = false;
+
 }
 
 void HangarTask::tick(){
@@ -27,13 +35,50 @@ void HangarTask::tick(){
     
     switch (state)
     {
-    case CLOSED:
+    case DRONE_INSIDE:
+        if(context->requestCommand == context->CMD_TAKEOFF && context->isInPreAlarm != true) {
+            context->requestCommand = context->NONE;
+            context->okBlink = true;
+            ledOne->switchOff();
+            lcd->clear();
+            lcd->write("TAKE OFF", 0, 0);
+            servo->setPosition(90);
+            stateTimestamp = millis();
+            this->state = TAKE_OFF_OPENING;
+        }
         break;
-    case OPENING:
+    case TAKE_OFF_OPENING:
+        if (millis() - stateTimestamp >= 2000) {
+            this->isTrackingExit = false;
+            this->state = TAKE_OFF_WAITING;
+        }
         break;
-    case OPEN:
+    case TAKE_OFF_WAITING: {
+            float distance = this->proximity->getDistance();
+            if (distance > D1_TAKEOFF_DIST) {
+                if (!this->isTrackingExit) {
+                    this->isTrackingExit = true;
+                    this->exitTimestamp = millis();
+                } else if (millis() - this->exitTimestamp >= T1_TAKEOFF_TIME) {
+                    this->isTrackingExit = false;
+                    this->servo->setPosition(0);
+                    this->stateTimestamp = millis();
+                    this->state = TAKE_OFF_CLOSING;
+                }
+            } else {
+                this->isTrackingExit = false;
+            }
         break;
-    case CLOSING:
+        }
+    case TAKE_OFF_CLOSING:
+        break;
+    case DRONE_OUT:
+        break;
+    case LANDING_OPENING:
+        break;
+    case LANDING_WAITING:
+        break;
+    case LANDING_CLOSING:
         break;
     case ALARM_STATE:
         this->servo->detach();
@@ -42,9 +87,6 @@ void HangarTask::tick(){
             this->context->isInAlarm = false;
             this->context->isInPreAlarm = false;
             this->ledThree->switchOff();
-            this->servo->attach();
-            this->servo->setPosition(0);
-            this->state = CLOSED;
         }
         break;
     }
