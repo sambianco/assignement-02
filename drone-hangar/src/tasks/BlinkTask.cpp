@@ -4,7 +4,6 @@
 BlinkTask::BlinkTask(Light* led, Context* context) {
     this->led = led;
     this->context = context;
-    this->state = IDLE;
 }
 
 void BlinkTask::init(int period) {

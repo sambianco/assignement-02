@@ -23,10 +23,12 @@ class HangarTask : public Task {
         Button* resetButton;
         PresenceSensor* pir;
         ProximitySensor* proximity;
-        Light* led;
+        Light* ledOne;
+        Light* ledThree;
+        bool inside;
     
     public:
-        HangarTask(Context* context, ServoMotor* servo, Button* resetButton, PresenceSensor* pir, ProximitySensor* proximity, Light* led);
+        HangarTask(Context* context, ServoMotor* servo, Button* resetButton, PresenceSensor* pir, ProximitySensor* proximity, Light* led, Light* ledThree);
         void init(int period) override;
         void tick() override;
 
