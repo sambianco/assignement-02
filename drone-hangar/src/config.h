@@ -30,6 +30,8 @@
 #define T1_TAKEOFF_TIME   3000   // Tempo conferma uscita (ms)
 #define T2_LANDING_TIME   3000   // Tempo conferma atterraggio (ms)
 
+#define TIME_DOOR_MOVE    2000   // Tempo di apertura/chiusura porta
+
 #define TEMP1_PREALARM    30.0f  // Soglia pre-allarme (°C)
 #define TEMP2_ALARM       40.0f  // Soglia allarme bloccante (°C)
 #define T3_PREALARM_TIME  5000   // Durata per pre-allarme (ms)

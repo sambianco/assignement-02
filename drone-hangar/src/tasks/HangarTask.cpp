@@ -42,13 +42,13 @@ void HangarTask::tick(){
             ledOne->switchOff();
             lcd->clear();
             lcd->write("TAKE OFF", 0, 0);
-            servo->setPosition(90);
+            servo->setPosition(SERVO_DOOR_OPEN);
             stateTimestamp = millis();
             this->state = TAKE_OFF_OPENING;
         }
         break;
     case TAKE_OFF_OPENING:
-        if (millis() - stateTimestamp >= 2000) {
+        if (millis() - stateTimestamp >= TIME_DOOR_MOVE) {
             this->isTrackingExit = false;
             this->state = TAKE_OFF_WAITING;
         }
@@ -61,7 +61,7 @@ void HangarTask::tick(){
                     this->exitTimestamp = millis();
                 } else if (millis() - this->exitTimestamp >= T1_TAKEOFF_TIME) {
                     this->isTrackingExit = false;
-                    this->servo->setPosition(0);
+                    this->servo->setPosition(SERVO_DOOR_CLOSED);
                     this->stateTimestamp = millis();
                     this->state = TAKE_OFF_CLOSING;
                 }
@@ -71,8 +71,23 @@ void HangarTask::tick(){
         break;
         }
     case TAKE_OFF_CLOSING:
+        if (millis() - stateTimestamp >= TIME_DOOR_MOVE) {
+            lcd->clear();
+            lcd->write("DRONE OUT", 0, 0);
+            context->okBlink = false;
+            this->state = DRONE_OUT;
+        }
         break;
     case DRONE_OUT:
+        if (context->requestCommand == Context::CMD_LAND && pir->isDetected() && !context->isInPreAlarm) {
+            this->context->requestCommand = Context::NONE;  // Consumo evento
+            context->okBlink = true;                        // Avvio lampeggio L2
+            lcd->clear();                                   // Puliamo LCD
+            lcd->write("LANDING", 0, 0);                    // Comunichiamo la posizione
+            servo->setPosition(SERVO_DOOR_OPEN);            // Apriamo la porta
+            stateTimestamp = millis();                      // Teniamo il tempo di apertura
+            this->state = LANDING_OPENING;                  // Cambiamo stato
+        }
         break;
     case LANDING_OPENING:
         break;
