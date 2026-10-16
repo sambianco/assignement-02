@@ -10,7 +10,7 @@ HangarTask::HangarTask(Context* context, ServoMotor* servo, Button* resetButton,
     this->ledOne = ledOne;
     this->ledThree = ledThree;
     this->lcd = lcd;
-    this->isTrackingExit = false;
+    this->isTrackingDistance = false;
     this->exitTimestamp = 0;
     this->stateTimestamp = 0;
 }
@@ -24,7 +24,7 @@ void HangarTask::init(int period) {
     this->ledThree->switchOff();
     this->servo->attach();
     this->servo->setPosition(0);
-    this->isTrackingExit = false;
+    this->isTrackingDistance = false;
 
 }
 
@@ -49,24 +49,25 @@ void HangarTask::tick(){
         break;
     case TAKE_OFF_OPENING:
         if (millis() - stateTimestamp >= TIME_DOOR_MOVE) {
-            this->isTrackingExit = false;
+            this->isTrackingDistance = false;
             this->state = TAKE_OFF_WAITING;
         }
         break;
     case TAKE_OFF_WAITING: {
             float distance = this->proximity->getDistance();
+            context->currentDistance = distance;
             if (distance > D1_TAKEOFF_DIST) {
-                if (!this->isTrackingExit) {
-                    this->isTrackingExit = true;
+                if (!this->isTrackingDistance) {
+                    this->isTrackingDistance = true;
                     this->exitTimestamp = millis();
                 } else if (millis() - this->exitTimestamp >= T1_TAKEOFF_TIME) {
-                    this->isTrackingExit = false;
+                    this->isTrackingDistance = false;
                     this->servo->setPosition(SERVO_DOOR_CLOSED);
                     this->stateTimestamp = millis();
                     this->state = TAKE_OFF_CLOSING;
                 }
             } else {
-                this->isTrackingExit = false;
+                this->isTrackingDistance = false;
             }
         break;
         }
@@ -90,8 +91,26 @@ void HangarTask::tick(){
         }
         break;
     case LANDING_OPENING:
+        if (millis() - stateTimestamp >= TIME_DOOR_MOVE) {
+            this->isTrackingDistance = false;
+            this->state = LANDING_WAITING;
+        }
+        break;
         break;
     case LANDING_WAITING:
+        float distance = this->proximity->getDistance();
+        context->currentDistance = distance;
+        if (distance < D2_LANDING_DIST) {
+            if(!this->isTrackingDistance) {
+                this->isTrackingDistance = true;
+                this->exitTimestamp = millis();
+            } else if (millis() - this->exitTimestamp >= T2_LANDING_TIME){
+                this->isTrackingDistance = false;
+                this->servo->setPosition(SERVO_DOOR_CLOSED);
+                this->stateTimestamp = millis();
+                this->state = LANDING_CLOSING;
+            }
+        }
         break;
     case LANDING_CLOSING:
         break;

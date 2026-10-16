@@ -18,7 +18,7 @@ class HangarTask : public Task {
 
     private:
         unsigned long stateTimestamp;   // Timestamp per le transizioni meccaniche della porta
-        bool isTrackingExit;            // True se il cronometro di uscita è in corso
+        bool isTrackingDistance;            // True se il cronometro di uscita è in corso
         unsigned long exitTimestamp;    // Istante in cui il drone ha superato D1
         State state;
         Context* context;
