@@ -30,6 +30,8 @@ class HangarTask : public Task {
         Light* ledThree;
         Lcd* lcd;
         bool inside;
+        float distance;
+        bool wasDroneOutside;
     
     public:
         HangarTask(Context* context, ServoMotor* servo, Button* resetButton, PresenceSensor* pir, ProximitySensor* proximity, Light* led, Light* ledThree, Lcd* lcd);

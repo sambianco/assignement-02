@@ -13,6 +13,8 @@ HangarTask::HangarTask(Context* context, ServoMotor* servo, Button* resetButton,
     this->isTrackingDistance = false;
     this->exitTimestamp = 0;
     this->stateTimestamp = 0;
+    this->distance = 0.0f;
+    this->wasDroneOutside = false;
 }
 
 void HangarTask::init(int period) {
@@ -23,14 +25,39 @@ void HangarTask::init(int period) {
     this->ledOne->switchOn();
     this->ledThree->switchOff();
     this->servo->attach();
-    this->servo->setPosition(0);
+    this->servo->setPosition(SERVO_DOOR_CLOSED);
     this->isTrackingDistance = false;
+    this->wasDroneOutside = false;
 
 }
 
 void HangarTask::tick(){
-    if (state != ALARM_STATE && this->context != nullptr && this->context->isInAlarm) {
-        state = ALARM_STATE;
+    if (this->state != ALARM_STATE && this->context != nullptr && this->context->isInAlarm) {
+        
+        // A) Salviamo dove si trovava il drone prima di cambiare stato
+        this->wasDroneOutside = (this->state == TAKE_OFF_CLOSING || 
+                                 this->state == DRONE_OUT || 
+                                 this->state == LANDING_OPENING || 
+                                 this->state == LANDING_WAITING);
+
+        // B) Se il drone è fuori, notifichiamo la DRU via seriale (tramite flag nel context)
+        if (this->wasDroneOutside) {
+            this->context->alarmNotificationNeeded = true;
+        }
+
+        // C) Azioni fisiche immediate richieste dalla specifica
+        this->servo->setPosition(SERVO_DOOR_CLOSED); // Chiude la porta (se era aperta)
+        this->context->okBlink = false;              // Spegne il lampeggio di L2
+        this->ledOne->switchOff();                   // Spegne L1
+        this->ledThree->switchOn();                  // Accende L3 (LED rosso di allarme)
+        
+        if (this->lcd != nullptr) {
+            this->lcd->clear();
+            this->lcd->write("ALARM", 0, 0);         // Mostra ALARM sul display LCD
+        }
+
+        // D) Entriamo formalmente in ALARM_STATE
+        this->state = ALARM_STATE;
     }
     
     switch (state)
@@ -53,8 +80,8 @@ void HangarTask::tick(){
             this->state = TAKE_OFF_WAITING;
         }
         break;
-    case TAKE_OFF_WAITING: {
-            float distance = this->proximity->getDistance();
+    case TAKE_OFF_WAITING:
+            distance = this->proximity->getDistance();
             context->currentDistance = distance;
             if (distance > D1_TAKEOFF_DIST) {
                 if (!this->isTrackingDistance) {
@@ -70,7 +97,6 @@ void HangarTask::tick(){
                 this->isTrackingDistance = false;
             }
         break;
-        }
     case TAKE_OFF_CLOSING:
         if (millis() - stateTimestamp >= TIME_DOOR_MOVE) {
             lcd->clear();
@@ -96,32 +122,56 @@ void HangarTask::tick(){
             this->state = LANDING_WAITING;
         }
         break;
-        break;
     case LANDING_WAITING:
         float distance = this->proximity->getDistance();
-        context->currentDistance = distance;
+        this->context->currentDistance = distance;
         if (distance < D2_LANDING_DIST) {
-            if(!this->isTrackingDistance) {
+            if (!this->isTrackingDistance) {
                 this->isTrackingDistance = true;
                 this->exitTimestamp = millis();
-            } else if (millis() - this->exitTimestamp >= T2_LANDING_TIME){
+            } else if (millis() - this->exitTimestamp >= T2_LANDING_TIME) {
                 this->isTrackingDistance = false;
                 this->servo->setPosition(SERVO_DOOR_CLOSED);
                 this->stateTimestamp = millis();
                 this->state = LANDING_CLOSING;
             }
+        } else {
+            this->isTrackingDistance = false;
         }
         break;
     case LANDING_CLOSING:
-        break;
-    case ALARM_STATE:
-        this->servo->detach();
-        this->ledThree->switchOn();
-        if (this->resetButton->isPressed()) {
-            this->context->isInAlarm = false;
-            this->context->isInPreAlarm = false;
-            this->ledThree->switchOff();
+        if (millis() - stateTimestamp >= TIME_DOOR_MOVE) {
+            lcd->clear();
+            lcd->write("DRONE INSIDE", 0, 0);
+            context->okBlink = false;
+            this->ledOne->switchOn();
+            this->state = DRONE_INSIDE;
         }
         break;
+    case ALARM_STATE:
+        if (this->resetButton->isPressed()) {
+                // 1. Azzeramento dei flag di guasto nel contesto
+                this->context->isInAlarm = false;
+                this->context->isInPreAlarm = false;
+                
+                // 2. Ripristino segnalatori
+                this->ledThree->switchOff();
+                this->servo->setPosition(SERVO_DOOR_CLOSED);
+                this->isTrackingDistance = false;
+
+                // 3. Ripristino dello stato corretto in base a dove si trovava il drone
+                if (this->wasDroneOutside) {
+                    this->lcd->clear();
+                    this->lcd->write("DRONE OUT", 0, 0);
+                    this->ledOne->switchOff();
+                    this->state = DRONE_OUT;
+                } else {
+                    this->lcd->clear();
+                    this->lcd->write("DRONE INSIDE", 0, 0);
+                    this->ledOne->switchOn();
+                    this->state = DRONE_INSIDE;
+                }
+            }
+            break;
     }
 }
