@@ -11,6 +11,7 @@ struct Context
     bool okBlink = false;
     DroneCommand requestCommand = NONE;
     float currentDistance = 0.0f;
+    bool alarmNotificationNeeded = false;
 };
 
 #endif
