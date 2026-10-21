@@ -103,6 +103,7 @@ void HangarTask::tick(){
             lcd->write("DRONE OUT", 0, 0);
             context->okBlink = false;
             this->state = DRONE_OUT;
+            this->context->isDroneInside = false;
         }
         break;
     case DRONE_OUT:
@@ -123,7 +124,7 @@ void HangarTask::tick(){
         }
         break;
     case LANDING_WAITING:
-        float distance = this->proximity->getDistance();
+        distance = this->proximity->getDistance();
         this->context->currentDistance = distance;
         if (distance < D2_LANDING_DIST) {
             if (!this->isTrackingDistance) {
@@ -146,20 +147,18 @@ void HangarTask::tick(){
             context->okBlink = false;
             this->ledOne->switchOn();
             this->state = DRONE_INSIDE;
+            this->context->isDroneInside = true;
         }
         break;
     case ALARM_STATE:
         if (this->resetButton->isPressed()) {
-                // 1. Azzeramento dei flag di guasto nel contesto
                 this->context->isInAlarm = false;
                 this->context->isInPreAlarm = false;
                 
-                // 2. Ripristino segnalatori
                 this->ledThree->switchOff();
                 this->servo->setPosition(SERVO_DOOR_CLOSED);
                 this->isTrackingDistance = false;
 
-                // 3. Ripristino dello stato corretto in base a dove si trovava il drone
                 if (this->wasDroneOutside) {
                     this->lcd->clear();
                     this->lcd->write("DRONE OUT", 0, 0);

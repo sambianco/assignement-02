@@ -25,17 +25,17 @@
 #define PERIOD_BLINK     250
 
 // CONTROL PARAMETERS
-#define D1_TAKEOFF_DIST   30.0f  // Distanza uscita drone (cm)
-#define D2_LANDING_DIST   10.0f  // Distanza drone a terra (cm)
-#define T1_TAKEOFF_TIME   3000   // Tempo conferma uscita (ms)
-#define T2_LANDING_TIME   3000   // Tempo conferma atterraggio (ms)
+#define D1_TAKEOFF_DIST   30.0f  // Distance of take-off  (cm)
+#define D2_LANDING_DIST   10.0f  // Distance of landing (cm)
+#define T1_TAKEOFF_TIME   3000   // Time confirmation exit (ms)
+#define T2_LANDING_TIME   3000   // Time confirmation landing (ms)
 
-#define TIME_DOOR_MOVE    2000   // Tempo di apertura/chiusura porta
+#define TIME_DOOR_MOVE    2000   // Time of door opening/closing
 
-#define TEMP1_PREALARM    30.0f  // Soglia pre-allarme (°C)
-#define TEMP2_ALARM       40.0f  // Soglia allarme bloccante (°C)
-#define T3_PREALARM_TIME  5000   // Durata per pre-allarme (ms)
-#define T4_ALARM_TIME     3000   // Durata per allarme (ms)
+#define TEMP1_PREALARM    30.0f  // Temperature threshold for pre-alarm (°C)
+#define TEMP2_ALARM       40.0f  // Temperature threshold for alarm (°C)
+#define T3_PREALARM_TIME  5000   // Duration of pre-alarm (ms)
+#define T4_ALARM_TIME     3000   // Duration of alarm (ms)
 
 // SERVO POSITIONS (°)
 #define SERVO_DOOR_CLOSED   0

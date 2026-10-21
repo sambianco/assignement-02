@@ -24,7 +24,9 @@ void TempTask::init(int period) {
 }
 
 void TempTask::tick() {
-
+    if (!this->context->isDroneInside) {
+        return;
+    }
     this->currentTemp = this->sensor->getTemperature();
 
     switch (this->state) {

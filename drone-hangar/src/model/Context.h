@@ -12,6 +12,7 @@ struct Context
     DroneCommand requestCommand = NONE;
     float currentDistance = 0.0f;
     bool alarmNotificationNeeded = false;
+    bool isDroneInside = true;
 };
 
 #endif
