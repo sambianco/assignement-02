@@ -1,6 +1,8 @@
 #ifndef __LIGHT_H__
 #define __LIGHT_H__
 
+#include <stdint.h>
+
 class Light {
     public:
         virtual ~Light() {}

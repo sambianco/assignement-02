@@ -1,6 +1,8 @@
 #ifndef __PROXIMITYSENSOR_H__
 #define __PROXIMITYSENSOR_H__
 
+#include <stdint.h>
+
 class ProximitySensor {
     public:
         virtual ~ProximitySensor() {}

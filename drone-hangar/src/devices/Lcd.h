@@ -1,6 +1,8 @@
 #ifndef __LCD_H__
 #define __LCD_H__
 
+#include <stdint.h>
+
 class Lcd {
 public:
     virtual ~Lcd() {}
